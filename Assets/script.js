@@ -32,6 +32,11 @@ let current = {
   year: dT.getFullYear(),
 };
 
+// gets M/D/Y for localStorage input
+function fullDate() {
+  return dT.getMonth() + 1 + "/" + dT.getDate() + "/" + dT.getFullYear();
+}
+
 $(function () {
   let body = $("body");
   let container = body.children().eq(1); // selects the hourBlock's to be parent container
@@ -44,6 +49,9 @@ $(function () {
     } else {
       hourBlock = hourBlock + "AM";
     }
+    let timeAndDate = hourBlock + " | " + fullDate(); // makes localStorage more specic to a day.
+    let thisBlock = localStorage.getItem(timeAndDate);
+
     // prints rows to DOM
     let hourRow = $("<div>");
     container.append(hourRow);
@@ -61,6 +69,20 @@ $(function () {
     button.addClass("btn saveBtn col-2 col-md-1");
     button.attr("area-label", "save");
     button.append('<i class="fas fa-save" aria-hidden="true"></i>');
+    
+    textArea.text(thisBlock)
+
+    if (h < current.hour) {
+      textArea.css("background", "transparent");
+    } else if (h > current.hour) {
+      // prettier-ignore
+      textArea.css({ "background-color": "green", 'color': "white" });
+    }
+
+    button.on("click", function () {
+      let inputText = textArea.val();
+      localStorage.setItem(timeAndDate, inputText);
+    });
   }
 
   // TODO: Add a listener for click events on the save button. This code should

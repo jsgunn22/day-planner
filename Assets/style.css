@@ -4,10 +4,10 @@ body {
 }
 
 textarea {
-  background: transparent;
+  background-color: red;
   border: none;
   resize: none;
-  color: #000000;
+  color: #000;
   border-left: 1px solid black;
   padding: 10px;
 }
