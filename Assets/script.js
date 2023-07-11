@@ -50,7 +50,7 @@ $(function () {
       hourBlock = hourBlock + "AM";
     }
     let timeAndDate = hourBlock + " | " + fullDate(); // makes localStorage more specic to a day.
-    let thisBlock = localStorage.getItem(timeAndDate);
+    let getThisBlock = localStorage.getItem(timeAndDate);
 
     // prints rows to DOM
     let hourRow = $("<div>");
@@ -69,8 +69,8 @@ $(function () {
     button.addClass("btn saveBtn col-2 col-md-1");
     button.attr("area-label", "save");
     button.append('<i class="fas fa-save" aria-hidden="true"></i>');
-    
-    textArea.text(thisBlock)
+
+    textArea.text(getThisBlock);
 
     if (h < current.hour) {
       textArea.css("background", "transparent");
@@ -79,12 +79,19 @@ $(function () {
       textArea.css({ "background-color": "green", 'color': "white" });
     }
 
-    button.on("click", function () {
-      let inputText = textArea.val();
-      localStorage.setItem(timeAndDate, inputText);
-    });
+    // does the same as the click listener below
+    // button.on("click", function () {
+    //   let inputText = textArea.val();
+    //   localStorage.setItem(timeAndDate, inputText);
+    // });
   }
 
+  container.on("click", ".btn", function () {
+    let thisHour = $(this).parent().children().eq(0).text();
+    let dateAndTime = thisHour + " | " + fullDate();
+    let thisText = $(this).parent().children("textarea").val();
+    localStorage.setItem(dateAndTime, thisText);
+  });
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
   // local storage. HINT: What does `this` reference in the click listener
