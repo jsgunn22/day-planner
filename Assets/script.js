@@ -54,7 +54,7 @@ $(function () {
   $("#currentDay").text(currentDT);
 
   // prints time blocks for each hour in the business day
-  for (let h = 1; h < 25; h++) {
+  for (let h = 9; h < 18; h++) {
     // change back to 9 & 18
     // converts military time to standard
     let hourBlock = h;
@@ -159,6 +159,7 @@ $(function () {
     }
   }, 1000);
 
+  // adds this item to localStorage
   container.on("click", ".btn", function () {
     let thisHour = $(this).parent().children().eq(0).text();
     let dateAndTime = thisHour + " | " + fullDate();
@@ -176,6 +177,9 @@ $(function () {
 
   container.on("focus", "textarea", function () {
     let currentTime = new Date().getHours();
+    if (currentTime > 12) {
+      currentTime = currentTime - 12;
+    }
     let currentTimeBlock = $(this)
       .parent()
       .children(".hour")
@@ -187,9 +191,10 @@ $(function () {
     $(this)
       .parent()
       .css({ "box-shadow": "var(--overlay-shadow)", "z-index": "2" });
-
+    // $(this).parent().siblings().css("opacity", "0.5");
     container.on("focusout", "textarea", function () {
       $(this).parent().css({ "box-shadow": "none", "z-index": "0" });
+      //$(this).parent().siblings().css("opacity", "1");
       $(".time-line").css("opacity", "1");
     });
   });

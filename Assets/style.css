@@ -39,7 +39,7 @@
   --opacity-danger: #fd595926;
 
   /* Stylings */
-  --overlay-shadow: 0px 4px 24px rgba(24, 30, 36, 0.16);
+  --overlay-shadow: 0px 8px 24px rgba(24, 30, 36, 0.16);
   --card-shadow: 0px 4px 4px rgba(8, 8, 8, 0.16);
 }
 
@@ -61,7 +61,7 @@ textarea {
 
 textarea:focus {
   outline: none;
-  box-shadow: inset var(--card-shadow);
+  border: solid 2px var(--success-900);
 }
 
 .description {
@@ -90,9 +90,17 @@ textarea:focus {
   color: var(--neutral-900);
 }
 
+.past:focus {
+  border: 2px solid var(--neutral-900);
+}
+
 .future {
   background-color: var(--opacity-primary);
   color: var(--primary-500);
+}
+
+.future:focus {
+  border: 2px solid var(--primary-500);
 }
 
 .saveBtn {
