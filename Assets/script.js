@@ -71,7 +71,7 @@ $(function () {
     // prints rows to DOM
     let hourRow = $("<div>");
     container.append(hourRow);
-    hourRow.addClass("row time-block past"); // remove .past after test
+    hourRow.addClass("row time-block"); // remove .past after test
     let timeBlock = $("<div>");
     hourRow.append(timeBlock);
     timeBlock.addClass("col-2 col-md-1 hour text-center py-3");
@@ -89,10 +89,10 @@ $(function () {
     textArea.text(getThisBlock);
 
     if (h < current.hour) {
-      textArea.css("background", "transparent");
+      textArea.addClass("past");
     } else if (h > current.hour) {
       // prettier-ignore
-      textArea.css({ "background-color": "green", 'color': "white" });
+      textArea.addClass('future');
     } else {
       let actualTimePosition = function () {
         let getTime = new Date();
@@ -147,7 +147,7 @@ $(function () {
     let rTime = new Date();
     let rMin = rTime.getMinutes();
     let rSec = rTime.getSeconds();
-    if (rMin === 0 && rSec === 0) {
+    if (rMin == 0 && rSec == 0) {
       location.reload();
     }
   }, 1000);
@@ -157,6 +157,28 @@ $(function () {
     let dateAndTime = thisHour + " | " + fullDate();
     let thisText = $(this).parent().children("textarea").val();
     localStorage.setItem(dateAndTime, thisText);
+  });
+
+  container.on("focus", "textarea", function () {
+    let currentTime = new Date().getHours();
+    let currentTimeBlock = $(this)
+      .parent()
+      .children(".hour")
+      .text()
+      .slice(0, -2);
+    o(currentTime);
+    o(currentTimeBlock);
+    if (currentTimeBlock == currentTime) {
+      $(".time-line").css("opacity", "0.15");
+    }
+    $(this)
+      .parent()
+      .css({ "box-shadow": "var(--overlay-shadow)", "z-index": "2" });
+
+    container.on("focusout", "textarea", function () {
+      $(this).parent().css({ "box-shadow": "none", "z-index": "0" });
+      $(".time-line").css("opacity", "1");
+    });
   });
 });
 
