@@ -54,7 +54,8 @@ $(function () {
   $("#currentDay").text(currentDT);
 
   // prints time blocks for each hour in the business day
-  for (let h = 9; h < 18; h++) {
+  for (let h = 1; h < 23; h++) {
+    // change back to 9 & 18
     // converts military time to standard
     let hourBlock = h;
     if (hourBlock > 12) {
@@ -90,6 +91,50 @@ $(function () {
     } else if (h > current.hour) {
       // prettier-ignore
       textArea.css({ "background-color": "green", 'color': "white" });
+    } else {
+      let actualTimePosition = function () {
+        let getTime = new Date();
+        let rowHeight = hourRow.height() / 60;
+        let timeLinePosition = rowHeight * getTime.getMinutes() + "px";
+        return timeLinePosition;
+      };
+      let timeLine = $("<div>");
+      hourRow.append(timeLine);
+      timeLine.addClass("time-line");
+      let currentTimePill = $("<div>");
+      timeLine.append(currentTimePill);
+      currentTimePill.addClass("current-time-pill");
+      let actualTime = function () {
+        let getTime = new Date();
+        let hr = getTime.getHours();
+        let min = getTime.getMinutes();
+        let sec = getTime.getSeconds();
+        let amPm = " AM";
+        if (hr > 12) {
+          hr = hr - 12;
+          amPm = " PM";
+        }
+        if (hr < 10) {
+          hr = "0" + hr;
+        }
+        if (min < 10) {
+          min = "0" + min;
+        }
+        if (sec < 10) {
+          sec = "0" + sec;
+        }
+        return hr + ":" + min + ":" + sec + amPm;
+      };
+      currentTimePill.text(actualTime);
+      timeLine.css("top", actualTimePosition);
+      let refresh = setInterval(() => {
+        currentTimePill.text(actualTime);
+        timeLine.css("top", actualTimePosition);
+      }, 1000);
+      if (actualTime === "00:00:00") {
+        clearInterval(refresh);
+        location.reload();
+      }
     }
 
     // does the same as the click listener below
@@ -98,6 +143,15 @@ $(function () {
     //   localStorage.setItem(timeAndDate, inputText);
     // });
   }
+
+  setInterval(() => {
+    let rTime = new Date();
+    let rMin = rTime.getMinutes();
+    let rSec = rTime.getSeconds();
+    if (rMin === 0 && rSec === 0) {
+      location.reload();
+    }
+  }, 1000);
 
   container.on("click", ".btn", function () {
     let thisHour = $(this).parent().children().eq(0).text();
