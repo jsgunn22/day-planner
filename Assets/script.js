@@ -54,12 +54,14 @@ $(function () {
   $("#currentDay").text(currentDT);
 
   // prints time blocks for each hour in the business day
-  for (let h = 1; h < 23; h++) {
+  for (let h = 1; h < 25; h++) {
     // change back to 9 & 18
     // converts military time to standard
     let hourBlock = h;
     if (hourBlock > 12) {
       hourBlock = hourBlock - 12 + "PM";
+    } else if (hourBlock === 12) {
+      hourBlock = hourBlock + "PM";
     } else {
       hourBlock = hourBlock + "AM";
     }
