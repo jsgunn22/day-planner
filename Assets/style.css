@@ -46,6 +46,7 @@
 body {
   font-family: "Open Sans", sans-serif;
   font-size: 16px;
+  background-color: var(--neutral-200);
 }
 
 textarea {
@@ -76,7 +77,6 @@ textarea:focus {
   background-color: var(--neutral-200);
   position: relative;
   border-radius: 8px;
-  overflow: hidden;
 }
 
 .hour {
@@ -104,7 +104,7 @@ textarea:focus {
 
 .saveBtn:hover {
   font-size: 20px;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.1s ease-in-out;
   background-color: var(--primary-900);
   color: var(--neutral-000);
 }
@@ -119,7 +119,7 @@ textarea:focus {
 .delete-btn:hover {
   background-color: var(--danger-500);
   color: var(--neutral-000);
-  transition: all 0.3s ease-in-out;
+  transition: all 0.1s ease-in-out;
   font-size: 20px;
 }
 

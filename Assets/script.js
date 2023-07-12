@@ -98,6 +98,7 @@ $(function () {
       // prettier-ignore
       textArea.addClass('future');
     } else {
+      hourRow.css("z-index", "3");
       let actualTimePosition = function () {
         let getTime = new Date();
         let rowHeight = hourRow.height() / 60;
@@ -118,6 +119,8 @@ $(function () {
         let amPm = " AM";
         if (hr > 12) {
           hr = hr - 12;
+          amPm = " PM";
+        } else if (hr == 12) {
           amPm = " PM";
         }
         if (min < 10) {
@@ -161,6 +164,14 @@ $(function () {
     let dateAndTime = thisHour + " | " + fullDate();
     let thisText = $(this).parent().children("textarea").val();
     localStorage.setItem(dateAndTime, thisText);
+  });
+
+  // deletes this item from localStorage and re renders section
+  container.on("click", ".delete-btn", function () {
+    let thisHour = $(this).parent().children().eq(0).text();
+    let dateAndTime = thisHour + " | " + fullDate();
+    localStorage.removeItem(dateAndTime);
+    $(this).parent().children().eq(1).val("");
   });
 
   container.on("focus", "textarea", function () {
