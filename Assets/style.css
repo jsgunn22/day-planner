@@ -52,13 +52,16 @@ textarea {
   margin: 0;
   border-top: dashed 2px purple;
   z-index: 2;
+  text-align: center;
 }
 
 .current-time-pill {
-padding: 0 4px;
+  padding: 0 4px;
   background-color: purple;
   color: white;
   position: absolute;
-  top: -12px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   border-radius: 4px;
 }

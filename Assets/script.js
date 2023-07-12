@@ -114,9 +114,6 @@ $(function () {
           hr = hr - 12;
           amPm = " PM";
         }
-        if (hr < 10) {
-          hr = "0" + hr;
-        }
         if (min < 10) {
           min = "0" + min;
         }
