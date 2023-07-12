@@ -78,8 +78,12 @@ $(function () {
     timeBlock.text(hourBlock);
     let textArea = $("<textarea>");
     hourRow.append(textArea);
-    textArea.addClass("col-8 col-md-10 description");
+    textArea.addClass("col-8 col-md-9 description");
     textArea.attr("rows", "3");
+    let deleteBtn = $("<button>");
+    hourRow.append(deleteBtn);
+    deleteBtn.addClass("delete-btn col-2 col-md-1");
+    deleteBtn.append('<i class="fas fa-trash" aria-hidden="true"></i>');
     let button = $("<button>");
     hourRow.append(button);
     button.addClass("btn saveBtn col-2 col-md-1");
@@ -166,8 +170,6 @@ $(function () {
       .children(".hour")
       .text()
       .slice(0, -2);
-    o(currentTime);
-    o(currentTimeBlock);
     if (currentTimeBlock == currentTime) {
       $(".time-line").css("opacity", "0.15");
     }
