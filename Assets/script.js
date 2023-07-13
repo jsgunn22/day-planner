@@ -1,4 +1,4 @@
-let dT = new Date(); // gets current date and time
+let dT = new Date(); // gets current date and time for initial load
 // arrays for converting values into a string for the page title
 const monthNames = [
   "January",
@@ -40,6 +40,7 @@ function fullDate() {
 $(function () {
   let body = $("body");
   let container = body.children().eq(1); // selects the hourBlock's to be parent container
+  container.css("margin-bottom", "40px");
 
   // prettier-ignore - gets text for todays date and injects into header
   let currentDT =
@@ -53,9 +54,10 @@ $(function () {
     current.year;
   $("#currentDay").text(currentDT);
 
-  // input fields
+  // sets the default for when a user first loads the page
   let startHour = 9;
   let endHour = 17;
+  // gets current storage for start and stop times
   let storageStart = localStorage.getItem("startHour");
   if (storageStart == null) {
     storageStart = startHour;
@@ -67,6 +69,7 @@ $(function () {
     localStorage.setItem("endHour", storageEnd);
   }
 
+  // dropdown of start times for user to select
   let startInput = $("<select>");
   $("#startTime").append(startInput);
   startInput.append(
@@ -83,19 +86,22 @@ $(function () {
     "<option>11</option>",
     "<option>12</option>"
   );
+  // convers 0 to 12AM
   if (storageStart == 0) {
     storageStart = 12;
   }
-  startInput.val(storageStart);
+  startInput.val(storageStart); // sets stored start time to default value on page load
 
+  // start ampm dropdown
   let startAmPm = $("<select>");
   $("#startTime").append(startAmPm);
   startAmPm.append(
     "<option value='AM'>AM</option>",
     "<option value='PM'>PM</option>"
   );
-  startAmPm.addClass("ampm");
+  startAmPm.addClass("ampm"); // sets stored ampm selection to default value
 
+  // end times dropdown
   let endInput = $("<select>");
   $("#endTime").append(endInput);
   endInput.append(
@@ -113,6 +119,7 @@ $(function () {
     "<option>11</option>"
   );
 
+  // end ampm dropdown
   let endAmPm = $("<select>");
   $("#endTime").append(endAmPm);
   endAmPm.append(
@@ -121,23 +128,25 @@ $(function () {
   );
   endAmPm.addClass("ampm");
 
+  // converts end time to PM in ampm dropdown
   if (storageEnd > 12) {
     storageEnd = storageEnd - 12;
     endAmPm.val("PM");
   }
-  endInput.val(storageEnd);
+  endInput.val(storageEnd); // sets stored ampm selection to default value
 
+  // button to apply start/stop changes
   let hoursBtn = $("<button>");
   $("#inputs").append(hoursBtn);
   hoursBtn.text("Apply");
   hoursBtn.addClass("applyBtn");
 
+  // function to appy changes, update storage, and re render table.
   hoursBtn.on("click", function () {
     let startVal = startInput.val();
     let endVal = endInput.val();
     if (endAmPm.val() == "PM") {
       endVal = parseInt(endVal) + 12;
-      o(endVal);
     }
     if (startAmPm.val() == "PM") {
       startVal = parseInt(startVal) + 13;
@@ -156,14 +165,15 @@ $(function () {
   });
   // input fields
 
+  // renders table
   function renderHours() {
-    storageStart = localStorage.getItem("startHour");
-    storageEnd = localStorage.getItem("endHour");
+    storageStart = localStorage.getItem("startHour"); // gets start time from storage
+    storageEnd = localStorage.getItem("endHour"); // gest end time from storage
     let a = parseInt(storageStart); // coverts storage item to num
     let b = parseInt(storageEnd) + 1; // coverts storage item to num
     // prints time blocks for each hour in the business day
     for (let h = a; h < b; h++) {
-      // change back to 9 & 18
+      // a default is 9 | b default is 17
       // converts military time to standard
       let hourBlock = h;
       if (hourBlock > 12) {
@@ -176,7 +186,7 @@ $(function () {
         hourBlock = hourBlock + "AM";
       }
       let timeAndDate = hourBlock + " | " + fullDate(); // makes localStorage more specic to a day.
-      let getThisBlock = localStorage.getItem(timeAndDate);
+      let getThisBlock = localStorage.getItem(timeAndDate); // gets each rows saved value
 
       // prints rows to DOM
       let hourRow = $("<div>");
@@ -200,8 +210,9 @@ $(function () {
       button.attr("area-label", "save");
       button.append('<i class="fas fa-save" aria-hidden="true"></i>');
 
-      textArea.text(getThisBlock);
+      textArea.text(getThisBlock); // sets input value to what is set in local storage
 
+      // converts input background colors based on past or future times
       if (h < current.hour) {
         textArea.addClass("past");
       } else if (h > current.hour) {
@@ -215,6 +226,7 @@ $(function () {
           let timeLinePosition = rowHeight * getTime.getMinutes() + "px";
           return timeLinePosition;
         };
+        // creates the current time line and displays on the current hour
         let timeLine = $("<div>");
         hourRow.append(timeLine);
         timeLine.addClass("time-line");
@@ -243,26 +255,23 @@ $(function () {
         };
         currentTimePill.text(actualTime);
         timeLine.css("top", actualTimePosition);
+        // refreshes the time line ever second
         let refresh = setInterval(() => {
           currentTimePill.text(actualTime);
           timeLine.css("top", actualTimePosition);
         }, 1000);
+        // rerenders the page on a new hour
         if (actualTime === "00:00:00") {
           clearInterval(refresh);
           location.reload();
         }
       }
-
-      // does the same as the click listener below
-      // button.on("click", function () {
-      //   let inputText = textArea.val();
-      //   localStorage.setItem(timeAndDate, inputText);
-      // });
     }
   }
 
-  renderHours();
+  renderHours(); // renders table on initial load
 
+  // re renders the page ever hour
   setInterval(() => {
     let rTime = new Date();
     let rMin = rTime.getMinutes();
@@ -288,6 +297,7 @@ $(function () {
     $(this).parent().children().eq(1).val("");
   });
 
+  // sets focus state for [this] input
   container.on("focus", "textarea", function () {
     let currentTime = new Date().getHours();
     if (currentTime > 12) {
@@ -298,12 +308,14 @@ $(function () {
       .children(".hour")
       .text()
       .slice(0, -2);
+    // set time line opacity if the current hour is clicked
     if (currentTimeBlock == currentTime) {
       $(".time-line").css("opacity", "0.15");
     }
     $(this)
       .parent()
       .css({ "box-shadow": "var(--overlay-shadow)", "z-index": "2" });
+    // resets styles when clicked out of text area
     container.on("focusout", "textarea", function () {
       $(this).parent().css({ "box-shadow": "none", "z-index": "0" });
       $(".time-line").css("opacity", "1");
@@ -311,6 +323,7 @@ $(function () {
   });
 });
 
+// shorthand tool for console.log
 function o(nion) {
   console.log(nion);
 }
