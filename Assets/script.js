@@ -151,7 +151,7 @@ $(function () {
     storageStart = localStorage.getItem("startHour");
     storageEnd = localStorage.getItem("endHour");
     let a = parseInt(storageStart); // coverts storage item to num
-    let b = parseInt(storageEnd); // coverts storage item to num
+    let b = parseInt(storageEnd) + 1; // coverts storage item to num
     // prints time blocks for each hour in the business day
     for (let h = a; h < b; h++) {
       // change back to 9 & 18
