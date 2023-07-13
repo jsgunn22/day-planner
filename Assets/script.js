@@ -53,7 +53,8 @@ $(function () {
     current.year;
   $("#currentDay").text(currentDT);
 
-  let startHour = 9;
+  // input fields
+  let startHour = 8;
   let endHour = 18;
   let storageStart = localStorage.getItem("startHour");
   if (storageStart == null) {
@@ -66,8 +67,22 @@ $(function () {
     localStorage.setItem("endHour", storageEnd);
   }
 
-  let startInput = $("<input>");
+  let startInput = $("<select>");
   $("#inputs").append(startInput);
+  startInput.append(
+    "<option>1</option>",
+    "<option>2</option>",
+    "<option>3</option>",
+    "<option>4</option>",
+    "<option>5</option>",
+    "<option>6</option>",
+    "<option>7</option>",
+    "<option>8</option>",
+    "<option>9</option>",
+    "<option>10</option>",
+    "<option>11</option>",
+    "<option>12</option>"
+  );
   startInput.val(storageStart);
 
   let startAmPm = $("<select>");
@@ -77,9 +92,22 @@ $(function () {
     "<option value='PM'>PM</option>"
   );
 
-  let endInput = $("<input>");
+  let endInput = $("<select>");
   $("#inputs").append(endInput);
-  endInput.val(storageEnd);
+  endInput.append(
+    "<option>1</option>",
+    "<option>2</option>",
+    "<option>3</option>",
+    "<option>4</option>",
+    "<option>5</option>",
+    "<option>6</option>",
+    "<option>7</option>",
+    "<option>8</option>",
+    "<option>9</option>",
+    "<option>10</option>",
+    "<option>11</option>",
+    "<option>12</option>"
+  );
 
   let endAmPm = $("<select>");
   $("#inputs").append(endAmPm);
@@ -88,24 +116,40 @@ $(function () {
     "<option value='PM'>PM</option>"
   );
 
+  if (storageEnd > 12) {
+    storageEnd = storageEnd - 12;
+    endAmPm.val("PM");
+  }
+  endInput.val(storageEnd);
+
   let hoursBtn = $("<button>");
   $("#inputs").append(hoursBtn);
   hoursBtn.text("Apply");
 
   hoursBtn.on("click", function () {
     let startVal = startInput.val();
+    let endVal = endInput.val();
+    if (endAmPm.val() == "PM") {
+      endVal = parseInt(endVal) + 12;
+      o(endVal);
+    }
+    if (startAmPm.val() == "PM") {
+      startVal = parseInt(startVal) + 13;
+    }
+
     startHour = startVal;
     localStorage.setItem("startHour", startVal);
-    let endVal = endInput.val();
+
     endHour = endVal;
     localStorage.setItem("endHour", endVal);
     container.text("");
-    storageStart = localStorage.getItem("startHour");
-    storageEnd = localStorage.getItem("endHour");
     renderHours();
   });
+  // input fields
 
   function renderHours() {
+    storageStart = localStorage.getItem("startHour");
+    storageEnd = localStorage.getItem("endHour");
     let a = parseInt(storageStart); // coverts storage item to num
     let b = parseInt(storageEnd); // coverts storage item to num
     // prints time blocks for each hour in the business day
