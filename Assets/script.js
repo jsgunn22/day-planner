@@ -54,8 +54,8 @@ $(function () {
   $("#currentDay").text(currentDT);
 
   // input fields
-  let startHour = 8;
-  let endHour = 18;
+  let startHour = 9;
+  let endHour = 17;
   let storageStart = localStorage.getItem("startHour");
   if (storageStart == null) {
     storageStart = startHour;
@@ -68,7 +68,7 @@ $(function () {
   }
 
   let startInput = $("<select>");
-  $("#inputs").append(startInput);
+  $("#startTime").append(startInput);
   startInput.append(
     "<option>1</option>",
     "<option>2</option>",
@@ -83,17 +83,21 @@ $(function () {
     "<option>11</option>",
     "<option>12</option>"
   );
+  if (storageStart == 0) {
+    storageStart = 12;
+  }
   startInput.val(storageStart);
 
   let startAmPm = $("<select>");
-  $("#inputs").append(startAmPm);
+  $("#startTime").append(startAmPm);
   startAmPm.append(
     "<option value='AM'>AM</option>",
     "<option value='PM'>PM</option>"
   );
+  startAmPm.addClass("ampm");
 
   let endInput = $("<select>");
-  $("#inputs").append(endInput);
+  $("#endTime").append(endInput);
   endInput.append(
     "<option>12</option>",
     "<option>1</option>",
@@ -110,11 +114,12 @@ $(function () {
   );
 
   let endAmPm = $("<select>");
-  $("#inputs").append(endAmPm);
+  $("#endTime").append(endAmPm);
   endAmPm.append(
     "<option value='AM'>AM</option>",
     "<option value='PM'>PM</option>"
   );
+  endAmPm.addClass("ampm");
 
   if (storageEnd > 12) {
     storageEnd = storageEnd - 12;
@@ -125,6 +130,7 @@ $(function () {
   let hoursBtn = $("<button>");
   $("#inputs").append(hoursBtn);
   hoursBtn.text("Apply");
+  hoursBtn.addClass("applyBtn");
 
   hoursBtn.on("click", function () {
     let startVal = startInput.val();
@@ -165,9 +171,8 @@ $(function () {
       } else if (hourBlock === 12) {
         hourBlock = hourBlock + "PM";
       } else if (hourBlock === 0) {
-        hourBlock = "12";
-      }
-      {
+        hourBlock = "12AM";
+      } else {
         hourBlock = hourBlock + "AM";
       }
       let timeAndDate = hourBlock + " | " + fullDate(); // makes localStorage more specic to a day.
@@ -299,10 +304,8 @@ $(function () {
     $(this)
       .parent()
       .css({ "box-shadow": "var(--overlay-shadow)", "z-index": "2" });
-    // $(this).parent().siblings().css("opacity", "0.5");
     container.on("focusout", "textarea", function () {
       $(this).parent().css({ "box-shadow": "none", "z-index": "0" });
-      //$(this).parent().siblings().css("opacity", "1");
       $(".time-line").css("opacity", "1");
     });
   });

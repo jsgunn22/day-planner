@@ -25,11 +25,25 @@
   </head>
 
   <body>
-    <header class="p-5 mb-4">
+    <header class="p-5 pb-1 mb-4">
       <h1 class="display-3">Work Day Scheduler</h1>
       <p class="lead">A simple calendar app for scheduling your work day</p>
       <p id="currentDay" class="lead"></p>
-      <div id="inputs"></div>
+      <!-- adds input divs and instructions -->
+      <hr />
+      <p id="instructions">
+        Input a start and stop time to view and set your schedule for the day
+      </p>
+      <div id="inputs">
+        <div>
+          <label for="">Start Time</label>
+          <div id="startTime"></div>
+        </div>
+        <div>
+          <label for="">Stop Time</label>
+          <div id="endTime"></div>
+        </div>
+      </div>
     </header>
     <div class="container-fluid px-5"></div>
 
