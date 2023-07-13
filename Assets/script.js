@@ -41,6 +41,9 @@ $(function () {
   let body = $("body");
   let container = body.children().eq(1); // selects the hourBlock's to be parent container
   container.css("margin-bottom", "40px");
+  // sets the default for when a user first loads the page
+  let startHour = 9;
+  let endHour = 17;
 
   // prettier-ignore - gets text for todays date and injects into header
   let currentDT =
@@ -54,9 +57,6 @@ $(function () {
     current.year;
   $("#currentDay").text(currentDT);
 
-  // sets the default for when a user first loads the page
-  let startHour = 9;
-  let endHour = 17;
   // gets current storage for start and stop times
   let storageStart = localStorage.getItem("startHour");
   if (storageStart == null) {
