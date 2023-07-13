@@ -95,6 +95,7 @@ $(function () {
   let endInput = $("<select>");
   $("#inputs").append(endInput);
   endInput.append(
+    "<option>12</option>",
     "<option>1</option>",
     "<option>2</option>",
     "<option>3</option>",
@@ -105,8 +106,7 @@ $(function () {
     "<option>8</option>",
     "<option>9</option>",
     "<option>10</option>",
-    "<option>11</option>",
-    "<option>12</option>"
+    "<option>11</option>"
   );
 
   let endAmPm = $("<select>");
@@ -137,6 +137,9 @@ $(function () {
       startVal = parseInt(startVal) + 13;
     }
 
+    if (startVal == 12) {
+      startVal = 0;
+    }
     startHour = startVal;
     localStorage.setItem("startHour", startVal);
 
@@ -161,7 +164,10 @@ $(function () {
         hourBlock = hourBlock - 12 + "PM";
       } else if (hourBlock === 12) {
         hourBlock = hourBlock + "PM";
-      } else {
+      } else if (hourBlock === 0) {
+        hourBlock = "12";
+      }
+      {
         hourBlock = hourBlock + "AM";
       }
       let timeAndDate = hourBlock + " | " + fullDate(); // makes localStorage more specic to a day.
